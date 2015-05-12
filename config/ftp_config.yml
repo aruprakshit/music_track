@@ -1,0 +1,14 @@
+defaults: &defaults
+  ftp_username: unixmen
+  ftp_password: unixmen
+  ftp_ip: 192.168.1.6
+  ftp_root_dir: /srv/ftp
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

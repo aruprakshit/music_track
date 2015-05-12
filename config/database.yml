@@ -1,0 +1,25 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  database: music_track_development
+  pool: 5
+  username: <%= ENV['POSTGRES_USERNAME'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: music_track_test
+  host: localhost
+  pool: 5
+  username: <%= ENV['POSTGRES_USERNAME'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: music_track_production
+  pool: 5
+  username: <%= ENV['POSTGRES_USERNAME'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>

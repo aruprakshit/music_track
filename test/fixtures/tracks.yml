@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  apple_id: 1
+  artist: MyString
+  label: MyString
+  isrc: MyString
+  vendor_id: MyString
+  vendor_offer_code: MyString
+
+two:
+  apple_id: 1
+  artist: MyString
+  label: MyString
+  isrc: MyString
+  vendor_id: MyString
+  vendor_offer_code: MyString

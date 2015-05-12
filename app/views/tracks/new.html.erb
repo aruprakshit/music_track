@@ -1,0 +1,8 @@
+<%= form_tag "/tracks/fetch"  do %>
+  <p> Label1: <%= text_field_tag 'label1' %>
+  <p> Label2: <%= text_field_tag 'label2' %>
+  <p> Label3: <%= text_field_tag 'label3' %>
+  <p> Start Date: <%= date_field_tag 'start_date' %>
+  <p> End Date:   <%= date_field_tag 'end_date' %>
+  <p> <%= submit_tag 'Fetch' %>
+<% end %>
