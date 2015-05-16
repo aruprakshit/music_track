@@ -25,12 +25,12 @@ namespace :csv do
     Dir.glob(args[:dest_file].join("**/*.txt")) do |filename|
       puts "Started importing from file: #{File.basename(filename)}..."
 
-      CSV.foreach(filename, col_sep: "\t", quote_char: "|", headers: true) do |line|
-        db_name = (File.basename(filename) =~ /^r_c/i) ? 'track' : 'event' if args[:db_name].blank?
-        date = File.basename(filename).match(/.*_(\d{4})(\d{2})(\d{2})\z/) do 
-          Date.new $1.to_i, $2.to_i, $3.to_i
-        end
+      db_name = (File.basename(filename) =~ /^r_c/i) ? 'track' : 'event' if args[:db_name].blank?
+      date = File.basename(filename, ".txt").match(/.*_(\d{4})(\d{2})(\d{2})\z/) do 
+        Date.new $1.to_i, $2.to_i, $3.to_i
+      end
 
+      CSV.foreach(filename, col_sep: "\t", quote_char: "|", headers: true) do |line|
         case db_name
         when 'track'
           Track.create!(apple_id: line[0], artist: line[1], title: line[2],
@@ -54,6 +54,22 @@ namespace :csv do
   end
 
   desc "export CSV from DB"
-  task export: :environment do
+  task export: [ :start_date, :end_date, :labels ] => :environment do
+    config     = Rails.configuration.database_configuration
+    host       = config[Rails.env]["host"]
+    database   = config[Rails.env]["database"]
+    username   = config[Rails.env]["username"]
+    password   = config[Rails.env]["password"]
+    export_dir = Rails.root.join("tmp/report/data.csv")
+
+    sql =<<-QUERY
+SELECT dense_rank() over (order by count(events.id) desc) as rank ,tracks.isrc, tracks.title, tracks.artist, tracks.label, count(events.id) AS "event_count" from tracks INNER JOIN events ON tracks.apple_id = events.apple_id GROUP BY tracks.apple_id HAVING count(events.id) > 1 ORDER BY event_count DESC LIMIT 5 
+    QUERY
+
+    sh <<-SQL
+  PGPASSWORD=#{password} psql --host=#{host} --username=#{username} --dbname=#{database} << EOF
+  \\copy ( #{sql.strip} ) TO #{export_dir} CSV HEADER ;
+EOF
+    SQL
   end
 end

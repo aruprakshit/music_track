@@ -54,11 +54,8 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
 
-  root 'tracks#new'
+  post '/track' => 'tracks#fetch', as: 'fetch'
+  get '/new' => 'tracks#new', as: 'request'
 
-  resources :tracks, only: :new do
-    collection do
-      post 'fetch'
-    end
-  end
+  root 'tracks#new'
 end

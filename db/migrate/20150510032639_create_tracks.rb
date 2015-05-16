@@ -1,7 +1,7 @@
 class CreateTracks < ActiveRecord::Migration
   def change
-    create_table :tracks, :id => false, :primary_key => :apple_id do |t|
-      t.integer :apple_id, limit: 8
+    create_table :tracks, :id => false do |t|
+      t.primary_key :apple_id, :integer, limit: 8
       t.string :artist
       t.string :label
       t.string :isrc

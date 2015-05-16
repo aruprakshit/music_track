@@ -36,15 +36,14 @@ ActiveRecord::Schema.define(version: 20150511193846) do
 
   add_index "events", ["apple_id"], name: "index_events_on_apple_id", using: :btree
 
-  create_table "tracks", id: false, force: :cascade do |t|
-    t.integer  "apple_id",          limit: 8
+  create_table "tracks", primary_key: "apple_id", force: :cascade do |t|
     t.string   "artist"
     t.string   "label"
     t.string   "isrc"
     t.string   "vendor_id"
     t.string   "vendor_offer_code"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.string   "title"
   end
 

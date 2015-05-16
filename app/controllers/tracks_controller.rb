@@ -1,9 +1,5 @@
 class TracksController < ApplicationController
-  # https://sumanranjanpanda.wordpress.com/  needed later.
-  def new
-    #
-  end
-
   def fetch
+    ReportMailer.daily_report(params[:email]).deliver_now
   end
 end
