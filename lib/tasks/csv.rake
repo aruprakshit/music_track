@@ -54,7 +54,7 @@ namespace :csv do
   end
 
   desc "export CSV from DB"
-  task :export, [ :start_date, :end_date, :labels ] => :environment do
+  task :export, [ :start_date, :end_date, :labels ] => :environment do |t, args|
     config     = Rails.configuration.database_configuration
     host       = config[Rails.env]["host"]
     database   = config[Rails.env]["database"]
@@ -64,7 +64,7 @@ namespace :csv do
     mkdir_p export_dir
 
     sql =<<-QUERY
-SELECT dense_rank() over (order by count(events.id) desc) AS "Ranking" ,tracks.isrc AS "ISRC", tracks.title AS "Track Name", tracks.artist AS "Artist Name" , tracks.label AS "Label", count(events.id) AS "Quantity" from tracks INNER JOIN events ON tracks.apple_id = events.apple_id GROUP BY tracks.apple_id HAVING count(events.id) > 0 ORDER BY "Quantity" DESC LIMIT 50
+SELECT dense_rank() over (order by count(events.id) desc) AS "Ranking" ,tracks.isrc AS "ISRC", tracks.title AS "Track Name", tracks.artist AS "Artist Name" , tracks.label AS "Label", count(events.id) AS "Quantity" from tracks INNER JOIN events ON tracks.apple_id = events.apple_id WHERE ( start_date BETWEEN '#{args[:start_date]}' AND '#{args[:end_date]}' ) AND label IN (#{args[:labels]}) GROUP BY tracks.apple_id HAVING count(events.id) > 0 ORDER BY "Quantity" DESC LIMIT 50
     QUERY
 
     sh <<-SQL

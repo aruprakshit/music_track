@@ -1,7 +1,7 @@
 <%= form_tag fetch_path  do %>
-  <p> Label1: <%= text_field_tag 'label1' %> </p>
-  <p> Label2: <%= text_field_tag 'label2' %> </p>
-  <p> Label3: <%= text_field_tag 'label3' %> </p>
+  <p> Label1: <%= text_field_tag 'label[]' %> </p>
+  <p> Label2: <%= text_field_tag 'label[]' %> </p>
+  <p> Label3: <%= text_field_tag 'label[]' %> </p>
   <p> Start Date: <%= date_field_tag 'start_date' %> </p>
   <p> End Date:   <%= date_field_tag 'end_date' %> </p>
   <p> Email: <%= email_field_tag 'email' %> </p>
