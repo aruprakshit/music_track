@@ -66,6 +66,6 @@ SELECT dense_rank() over (order by count(events.id) desc) AS "Ranking" ,tracks.i
 
     conn = ActiveRecord::Base.connection
     conn.execute("COPY ( #{sql.strip} ) TO '#{filepath}' CSV HEADER ;")
-    rm_f filepath
+    # rm_f filepath
   end
 end
