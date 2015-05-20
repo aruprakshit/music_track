@@ -1,4 +1,4 @@
-module CSV
+module CsvFile
   class Exporter
     def initialize query, path
       @query = query
