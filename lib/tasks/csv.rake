@@ -55,12 +55,13 @@ namespace :csv do
 
   desc "export CSV from DB"
   task :export, [ :start_date, :end_date, :labels ] => :environment do |t, args|
-    mkdir_p Rails.root.join("tmp/report")
-    touch Rails.root.join("tmp/report/data.csv")
-    filepath = Rails.root.join("tmp/report/data.csv")
-    chmod "a=wr", filepath
+    storage_dir  = Storage::Directory.new(Rails.root.join("tmp"), 'report')
+    storage_dir.create!
+    storage_file = Storage::File.new(storage_dir.path_to_dir, 'data.csv')
+    storage_file.create!
+    storage_file.apply_permissions "a=wr"
 
     sql = Query::DailyReport.new(args).build_sql
-    CsvFile::Exporter.new(sql, filepath).export
+    CsvFile::Exporter.new(sql, storage_file.path_to_file).export
   end
 end
