@@ -6,15 +6,7 @@ namespace :csv do
   task :unzip, :dest_file do |t, args|
     args.with_defaults(:dest_file => Rails.root.join("tmp/zip/extracted"))
 
-    Zip::File.open(Rails.root.join("tmp/zip/data.zip")) do |zip_file|
-      zip_file.each do |entry|
-        puts "Unzipping the file: #{entry}"
-        destination_dir = args[:dest_file].join(entry.name)
-        mkdir_p destination_dir.dirname
-        zip_file.extract(entry, destination_dir) { true }
-      end
-    end
-
+    Archive::FileZipper.new(Rails.root.join("tmp/zip/data.zip"), args[:dest_file]).zip!
     puts "Unzipping is completed..."
   end
 
