@@ -46,3 +46,25 @@ group :development, :test do
   gem 'spring'
 end
 
+group :development do
+  gem 'guard'
+  gem 'guard-minitest'
+  gem 'railroady' # for ERD generation
+end
+
+gem 'minitest-focus', group: [:development, :test]
+gem 'simplecov', require: false, group: :test
+gem 'interactive_editor', group: :development
+gem 'pg'
+gem 'pg_search'
+gem 'draper', '~> 1.3'
+
+gem 'capistrano', '~> 3.2.0'
+gem 'capistrano-rails', '~> 1.1.0'
+gem 'capistrano-rvm', github: 'capistrano/rvm'
+gem 'capistrano-bundler'
+gem 'bower-rails'
+gem 'slim'
+gem 'slim-rails'
+gem 'pry-nav', group: [:development, :test]
+gem 'annotate', '~> 2.6.6'
