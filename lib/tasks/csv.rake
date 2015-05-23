@@ -29,24 +29,18 @@ namespace :csv do
       date = File.basename(filename, ".txt").match(/.*_(\d{4})(\d{2})(\d{2})\z/) do 
         Date.new $1.to_i, $2.to_i, $3.to_i
       end
+      FileUtils.chmod "a=wr", filename
 
-      CSV.foreach(filename, col_sep: "\t", quote_char: "|", headers: true) do |line|
-        case db_name
-        when 'track'
-          Track.create!(apple_id: line[0], artist: line[1], title: line[2],
-                        label: line[3], isrc: line[4],
-                        vendor_id: line[5], vendor_offer_code: line[6]
-                       )
-        when 'event'
-          Event.create!(event_type: line[0], end_reason_type: line[1], customer_id: line[4],
-                        device_type: line[6], track_owner: line[7], station_id: line[8],
-                        storefront_name: line[9], cma_flag: line[10], heat_seeker_flag: line[11],
-                        apple_id: line[5], start_date: date, event_start_time: line[2], event_end_time: line[3]
-                       )
-        else
-          raise "No such #{args[:db_name]} exist..."
-        end
-        puts "#{line} is inserted into #{args[:db_name]} table..."
+      case db_name
+      when 'track'
+        fields =  %w(apple_id artist title label isrc vendor_id vendor_offer_code)
+        CsvFile::Importer.new('tracks', filename, fields).import
+      when 'event'
+        fields =  %w(event_type end_reason_type event_start_time event_end_time customer_id apple_id device_type track_owner station_id storefront_name cma_flag heat_seeker_flag)
+        CsvFile::Importer.new('events', filename, fields).import
+        Event.update_all start_date: date
+      else
+        raise "No such #{args[:db_name]} exist..."
       end
 
       puts "Finished importing from file: #{File.basename(filename)}"

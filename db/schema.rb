@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150511193846) do
+ActiveRecord::Schema.define(version: 20150523111220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(version: 20150511193846) do
     t.string   "storefront_name"
     t.string   "cma_flag"
     t.string   "heat_seeker_flag"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                 default: '2015-05-23 11:15:31', null: false
+    t.datetime "updated_at",                 default: '2015-05-23 11:15:32', null: false
     t.integer  "apple_id",         limit: 8
     t.date     "start_date"
     t.integer  "event_start_time", limit: 8
@@ -42,8 +42,8 @@ ActiveRecord::Schema.define(version: 20150511193846) do
     t.string   "isrc"
     t.string   "vendor_id"
     t.string   "vendor_offer_code"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",        default: '2015-05-23 11:15:32', null: false
+    t.datetime "updated_at",        default: '2015-05-23 11:15:32', null: false
     t.string   "title"
   end
 
