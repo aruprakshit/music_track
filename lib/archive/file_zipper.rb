@@ -9,11 +9,16 @@ module Archive
       Zip::File.open(@source_path) do |zip_file|
         zip_file.each do |entry|
           puts "Unzipping the file: #{entry}"
-          destination_dir = @dest_path.join(entry.name)
-          FileUtils.mkdir_p destination_dir.dirname
-          zip_file.extract(entry, destination_dir) { true }
+          zip_file.extract(entry, prepare_destination_dir(entry.name)) { true }
         end
       end
+    end
+
+    private
+
+    def prepare_destination_dir dir
+      FileUtils.mkdir_p(@dest_path.join(dir).dirname)
+      @dest_path.join(dir)
     end
   end
 end
