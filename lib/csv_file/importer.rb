@@ -1,14 +1,24 @@
 module CsvFile
   class Importer
-    def initialize table, source_file, fields
+    def initialize table: table=nil
       @table = table
-      @source_file = source_file
-      @fields = fields.join(",")
+      # if there's no table, default to the model's plural
+      # @fields = fields.join(",")
     end
 
-    def import
+    def table
+      @table || self.singleton_class.model.to_s.downcase.pluralize
+    end
+
+    def import!(source_file)
       conn = ActiveRecord::Base.connection
-      conn.execute("COPY #{@table.strip} ( #{@fields} ) FROM '#{@source_file}' CSV HEADER DELIMITER '\t' QUOTE '|' ;")
+      conn.execute("COPY #{table.strip} ( #{self.singleton_class.fields.join(',') } ) FROM '#{source_file}' CSV HEADER DELIMITER '\t' QUOTE '|' ;")
+    end
+
+    def import_dir!(source_dir)
+      Pathname.new(source_dir).children.each do |p|
+        import!(p)
+      end
     end
   end
 end
