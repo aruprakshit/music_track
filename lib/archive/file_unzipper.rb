@@ -1,5 +1,5 @@
 module Archive
-  class FileZipper
+  class FileUnzipper
     def initialize source_path, dest_path
       @source_path = source_path
       @dest_path   = dest_path
