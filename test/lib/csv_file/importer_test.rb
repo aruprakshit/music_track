@@ -6,7 +6,7 @@ require 'csv'
 class ImporterTest < ActiveSupport::TestCase
   setup do
     @tracks_file_path = "#{Rails.root}/tmp/test/R_C_80028043_20150101.csv"
-    @events_file_path = "#{Rails.root}/tmp/test/R_D_80028043_20150101_part1.csv"
+    @events_file_path = "#{Rails.root}/tmp/test/R_D_80028043_20150101.csv"
   end
 
   test 'importing tracks file into database should succeed' do
