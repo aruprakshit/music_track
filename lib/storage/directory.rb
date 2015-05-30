@@ -3,6 +3,7 @@ module Storage
 
   class Directory
     attr_reader :path_to_dir
+
     def initialize source_dir, target_dir
       @path_to_dir = source_dir.join(target_dir)
     end

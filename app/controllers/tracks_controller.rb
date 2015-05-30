@@ -3,6 +3,8 @@ require 'rake'
 Rake::Task.clear
 Rails.application.load_tasks
 
+
+
 class TracksController < ApplicationController
   def fetch
     labels = params[:label].delete_if(&:blank?).map { |word| "'#{word}'" }.join(",")
