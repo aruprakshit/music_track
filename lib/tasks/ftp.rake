@@ -7,7 +7,7 @@ namespace :ftp do
   # RAILS_ENV=development bin/rake ftp:download
   task :download, [:dirs] => [ :environment, Rails.root.join("tmp/zip") ]  do |t, args|
     connection = FTPConnector.new
-    connection.download_data args[:dirs].split(","), Rails.root.join("tmp/zip"), match_patterns: [ "R_C_*.txt.gz", "R_D_*.txt.gz" ]
+    connection.download_data args[:dirs].split(" "), Rails.root.join("tmp/zip"), match_patterns: [ "R_C_*.txt.gz", "R_D_*.txt.gz" ]
     puts "Downloaded files...."
   end
 end
