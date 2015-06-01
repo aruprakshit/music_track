@@ -5,9 +5,9 @@ namespace :ftp do
   desc "download files from FTP server"
   # pass the environment task name to load your rails app. Like
   # RAILS_ENV=development bin/rake ftp:download
-  task download: [ :environment, Rails.root.join("tmp/zip") ]  do
+  task :download, [:dirs] => [ :environment, Rails.root.join("tmp/zip") ]  do |t, args|
     connection = FTPConnector.new
-    connection.download_data Date.today.strftime("%Y%m%d"), Rails.root.join("tmp/zip"), match_patterns: [ "R_C_*.txt.gz", "R_D_*.txt.gz" ]
+    connection.download_data args[:dirs], Rails.root.join("tmp/zip"), match_patterns: [ "R_C_*.txt.gz", "R_D_*.txt.gz" ]
     puts "Downloaded files...."
   end
 end

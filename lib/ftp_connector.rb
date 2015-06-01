@@ -23,25 +23,28 @@ class FTPConnector
   # it is synchronous by default
   # by default we don't want to overwrite the data we have
   # because the data files for one day should not change
-  def download_data(download_from_path, destination_path,
+  def download_data(download_from_paths, destination_path,
                     match_patterns: "*.txt.gz", overwrite: false)
 
     connect
     puts "current directory: #{@ftp.pwd}"
-    @ftp.chdir(download_from_path)
-    file_list = match_patterns.map { |match_pattern | @ftp.nlst(match_pattern) }
-    file_list.each do |file_name|
-      # destination file name should be the same as the original file name
-      destination_file_name = destination_path + "/" + File.basename(file_name)
+    download_from_paths.each do | download_from_path |
+      @ftp.chdir(download_from_path)
+      file_list = match_patterns.map { |match_pattern | @ftp.nlst(match_pattern) }
+      file_list.each do |file_name|
+        # destination file name should be the same as the original file name
+        destination_file_name = destination_path + "/" + File.basename(file_name)
 
-      # write the file if we want to overwrite or if it doesn't already exist
-      if overwrite || exists = !File.exists?(destination_file_name)
-        puts "Downloading file: #{file_name}"
+        # write the file if we want to overwrite or if it doesn't already exist
+        if overwrite || exists = !File.exists?(destination_file_name)
+          puts "Downloading file: #{file_name}"
 
-        # make sure to delete the file first so we can overwrite if needed
-        Pathname.new(file_name).unlink if exists
-        @ftp.getbinaryfile(file_name, destination_file_name)
+          # make sure to delete the file first so we can overwrite if needed
+          Pathname.new(file_name).unlink if exists
+          @ftp.getbinaryfile(file_name, destination_file_name)
+        end
       end
+      @ftp.chdir("..")
     end
 
     @ftp.close
