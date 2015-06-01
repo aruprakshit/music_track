@@ -6,8 +6,10 @@ namespace :csv do
   task :unzip, :dest_file do |t, args|
     args.with_defaults(:dest_file => Rails.root.join("tmp/zip/extracted"))
 
-    Archive::FileUnzipper.new(Rails.root.join("tmp/zip/data.zip"), args[:dest_file]).zip!
-    puts "Unzipping is completed..."
+    Dir.glob("#{Rails.root.join("tmp/zip/*.gz")}") do |f|
+      Archive::FileUnzipper.new(f, args[:dest_file]).zip!
+      puts "Unzipping is completed... of #{f}"
+    end
   end
 
   desc "import CSV rows to DB"

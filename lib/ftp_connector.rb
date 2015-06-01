@@ -28,6 +28,7 @@ class FTPConnector
 
     connect
     puts "current directory: #{@ftp.pwd}"
+    puts download_from_paths
     download_from_paths.each do | download_from_path |
       @ftp.chdir(download_from_path)
       file_list = match_patterns.map { |match_pattern | @ftp.nlst(match_pattern) }

@@ -5,7 +5,7 @@ defaults: &defaults
   # abdo's
   ftp_ip: localhost
   # ftp_root_dir: /srv/ftp
-  ftp_root_dir: /srv/
+  ftp_root_dir: /srv/ftp
 
 development:
   <<: *defaults
